@@ -5,11 +5,14 @@ import { Filter } from './Form/Filter/Filter';
 import { ContactList } from './Form/ContactList/ContactList';
 import shortid from 'shortid';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, deleteContact, storeContacts } from 'redux/store';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(localStorage.getItem('contacts')) || [];
-  });
+  const contacts = useSelector(state => state.contacts);
+
+  const dispatch = useDispatch();
+
   const [filter, setFilter] = useState('');
 
   const handleSubmit = (name, number) => {
@@ -22,7 +25,7 @@ export const App = () => {
     const contactNames = contacts.map(({ name }) => name);
 
     if (!contactNames.includes(contact.name)) {
-      setContacts(prevState => [contact, ...prevState]);
+      dispatch(addContact(contact));
     } else {
       alert(contact.name + ' is already in contacts.');
     }
@@ -32,17 +35,11 @@ export const App = () => {
     setFilter(e.currentTarget.value);
   };
 
-  const deleteContact = id => {
-    setContacts(prevState => prevState.filter(contact => contact.id !== id));
-  };
-
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  useEffect(() => {}, []);
 
   return (
     <Box>

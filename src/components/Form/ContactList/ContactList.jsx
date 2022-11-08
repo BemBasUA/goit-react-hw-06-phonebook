@@ -1,13 +1,20 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/store';
 
 export const ContactList = ({ data, onClick }) => {
+  const dispatch = useDispatch();
+  const deleterContact = id => {
+    dispatch(deleteContact(id));
+    // setContacts(prevState => prevState.filter(contact => contact.id !== id));
+  };
   return (
     <ul>
       {data.map(contact => {
         return (
           <li key={contact.id}>
             {contact.name}: {contact.number}{' '}
-            <button type="button" onClick={() => onClick(contact.id)}>
+            <button type="button" onClick={() => deleterContact(contact.id)}>
               Delete
             </button>
           </li>
