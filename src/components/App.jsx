@@ -1,19 +1,18 @@
 import { Box } from './Box/Box';
-import { useState } from 'react';
 import { Form } from './Form/Form';
 import { Filter } from './Form/Filter/Filter';
 import { ContactList } from './Form/ContactList/ContactList';
 import shortid from 'shortid';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, deleteContact, storeContacts } from 'redux/store';
+import { addContact, deleteContact } from 'redux/constactsSlice';
 
 export const App = () => {
-  const contacts = useSelector(state => state.contacts);
-
   const dispatch = useDispatch();
 
-  const [filter, setFilter] = useState('');
+  const contacts = useSelector(state => state.contacts);
+
+  const filter = useSelector(state => state.filter);
 
   const handleSubmit = (name, number) => {
     const contact = {
@@ -31,10 +30,6 @@ export const App = () => {
     }
   };
 
-  const changeFilter = e => {
-    setFilter(e.currentTarget.value);
-  };
-
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
@@ -46,7 +41,7 @@ export const App = () => {
       <h1>Phonebook</h1>
       <Form onSubmit={handleSubmit}></Form>
       <h2>Contacts</h2>
-      <Filter value={filter} onChange={changeFilter}></Filter>
+      <Filter></Filter>
       <ContactList data={visibleContacts} onClick={deleteContact}></ContactList>
     </Box>
   );

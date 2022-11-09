@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/store';
+import { deleteContact } from 'redux/constactsSlice';
 
-export const ContactList = ({ data, onClick }) => {
+export const ContactList = ({ data }) => {
   const dispatch = useDispatch();
-  const deleterContact = id => {
+  const handleClick = id => {
     dispatch(deleteContact(id));
-    // setContacts(prevState => prevState.filter(contact => contact.id !== id));
   };
   return (
     <ul>
@@ -14,7 +13,7 @@ export const ContactList = ({ data, onClick }) => {
         return (
           <li key={contact.id}>
             {contact.name}: {contact.number}{' '}
-            <button type="button" onClick={() => deleterContact(contact.id)}>
+            <button type="button" onClick={() => handleClick(contact.id)}>
               Delete
             </button>
           </li>
@@ -26,7 +25,6 @@ export const ContactList = ({ data, onClick }) => {
 
 ContactList.propTypes = {
   data: PropTypes.array.isRequired,
-  onClick: PropTypes.func.isRequired,
   contact: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
